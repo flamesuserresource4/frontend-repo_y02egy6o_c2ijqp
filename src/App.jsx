@@ -1,73 +1,80 @@
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import Hero from './components/Hero'
+import OrbitProgress from './components/OrbitProgress'
+import CharacterScene from './components/CharacterScene'
+import ThemeToggle from './components/ThemeToggle'
+
 function App() {
+  const [progress, setProgress] = useState(0)
+  const [phase, setPhase] = useState('work')
+
+  useEffect(() => {
+    const onProgress = (e) => {
+      setProgress(e.detail.value)
+      setPhase(e.detail.phase)
+    }
+    window.addEventListener('pomo-progress', onProgress)
+    return () => window.removeEventListener('pomo-progress', onProgress)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_50%)]"></div>
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-pink-50 to-white dark:from-[#0b1022] dark:via-[#0a0e1a] dark:to-[#080c16] transition-colors">
+      {/* Stars layer */}
+      <div className="pointer-events-none fixed inset-0 opacity-60 mix-blend-screen">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.35),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.2),transparent_40%)]" />
+      </div>
 
-      <div className="relative min-h-screen flex items-center justify-center p-8">
-        <div className="max-w-2xl w-full">
-          {/* Header with Flames icon */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center mb-6">
-              <img
-                src="/flame-icon.svg"
-                alt="Flames"
-                className="w-24 h-24 drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]"
-              />
-            </div>
+      <div className="relative max-w-6xl mx-auto px-4 py-6 md:py-10">
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-pink-500 to-amber-500">
+            Cozy Space Pomodoro
+          </div>
+          <ThemeToggle />
+        </div>
 
-            <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
-              Flames Blue
-            </h1>
+        <Hero />
 
-            <p className="text-xl text-blue-200 mb-6">
-              Build applications through conversation
-            </p>
+        {/* Timer Section */}
+        <section className="mt-10 md:mt-14 grid md:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+          <div className="flex items-center justify-center order-3 md:order-1">
+            <CharacterScene state={phase} />
           </div>
 
-          {/* Instructions */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 shadow-xl mb-6">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                1
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Describe your idea</h3>
-                <p className="text-blue-200/80 text-sm">Use the chat panel on the left to tell the AI what you want to build</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                2
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Watch it build</h3>
-                <p className="text-blue-200/80 text-sm">Your app will appear in this preview as the AI generates the code</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                3
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Refine and iterate</h3>
-                <p className="text-blue-200/80 text-sm">Continue the conversation to add features and make changes</p>
-              </div>
+          <div className="flex flex-col items-center order-2">
+            <OrbitProgress progress={progress} mode={phase} />
+            <div className="-mt-20 z-10">
+              <TimerShell onPhase={setPhase} />
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-sm text-blue-300/60">
-              No coding required • Just describe what you want
-            </p>
+          <div className="flex items-center justify-center order-1 md:order-3">
+            {/* Decorative planets */}
+            <div className="relative w-56 h-56">
+              <div className="absolute w-20 h-20 rounded-full bg-amber-300/80 blur-[1px] shadow-[0_0_30px_rgba(251,191,36,0.6)] left-4 top-6 animate-pulse" />
+              <div className="absolute w-12 h-12 rounded-full bg-sky-300/80 right-6 bottom-8 animate-bounce [animation-duration:3s]" />
+              <div className="absolute w-16 h-16 rounded-full bg-purple-400/70 left-10 bottom-3" />
+            </div>
           </div>
+        </section>
+
+        {/* Footer note */}
+        <div className="mt-14 text-center text-slate-600 dark:text-slate-300">
+          Built for calm focus among the stars.
         </div>
       </div>
     </div>
   )
+}
+
+function TimerShell() {
+  // Loads the TimerControls lazily to keep App simple
+  const [Comp, setComp] = useState(null)
+  useEffect(() => {
+    import('./components/TimerControls').then((m) => setComp(() => m.default))
+  }, [])
+  if (!Comp) return null
+  return <Comp />
 }
 
 export default App
