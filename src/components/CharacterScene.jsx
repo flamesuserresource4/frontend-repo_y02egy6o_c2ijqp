@@ -5,7 +5,7 @@ function Robot({ state }) {
   const reading = state === 'work'
   const chilling = state !== 'work'
   return (
-    <div className="relative w-56 h-56">
+    <div className="relative w-40 h-40 md:w-56 md:h-56">
       {/* body */}
       <motion.div
         animate={{ y: [0, -6, 0] }}
@@ -14,7 +14,7 @@ function Robot({ state }) {
       />
       {/* face */}
       <motion.div
-        className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-36 h-20 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-center"
+        className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-28 md:w-36 h-16 md:h-20 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-center"
         animate={{ opacity: reading ? 1 : 0.9 }}
       >
         <div className="flex gap-3">
@@ -24,19 +24,19 @@ function Robot({ state }) {
       </motion.div>
       {/* book */}
       {reading && (
-        <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-16 rounded-xl bg-pink-300/90 border border-white/40" animate={{ rotate: [-2, 2, -2] }} transition={{ repeat: Infinity, duration: 3 }} />
+        <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 md:w-28 h-14 md:h-16 rounded-xl bg-pink-300/90 border border-white/40" animate={{ rotate: [-2, 2, -2] }} transition={{ repeat: Infinity, duration: 3 }} />
       )}
       {/* floating cat */}
       {chilling && (
-        <motion.div className="absolute -right-6 bottom-6" animate={{ y: [0, -6, 0], rotate: [-2, 2, -2] }} transition={{ repeat: Infinity, duration: 4 }}>
-          <div className="w-16 h-10 rounded-full bg-amber-200 border border-amber-300 shadow">
+        <motion.div className="absolute -right-4 md:-right-6 bottom-4 md:bottom-6" animate={{ y: [0, -6, 0], rotate: [-2, 2, -2] }} transition={{ repeat: Infinity, duration: 4 }}>
+          <div className="w-12 md:w-16 h-8 md:h-10 rounded-full bg-amber-200 border border-amber-300 shadow">
             <div className="w-3 h-3 bg-amber-300 rounded-full absolute left-2 top-3" />
             <div className="w-3 h-3 bg-amber-300 rounded-full absolute left-5 top-2" />
           </div>
         </motion.div>
       )}
       {/* planet */}
-      <motion.div className="absolute -left-6 -top-4 w-14 h-14 rounded-full bg-purple-400/70 blur-[1px] shadow-[0_0_20px_rgba(168,85,247,0.6)]" animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 5 }} />
+      <motion.div className="absolute -left-5 md:-left-6 -top-3 md:-top-4 w-10 md:w-14 h-10 md:h-14 rounded-full bg-purple-400/70 blur-[1px] shadow-[0_0_20px_rgba(168,85,247,0.6)]" animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 5 }} />
     </div>
   )
 }

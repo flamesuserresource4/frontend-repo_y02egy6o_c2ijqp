@@ -3,8 +3,8 @@ import Spline from '@splinetool/react-spline'
 
 export default function Hero() {
   return (
-    <section className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden rounded-3xl">
-      <div className="absolute inset-0">
+    <section className="relative h-[42vh] md:h-[52vh] w-full overflow-hidden rounded-3xl">
+      <div className="absolute inset-0 scale-100 md:scale-100">
         <Spline scene="https://prod.spline.design/vZX5NNlylxke-6DM/scene.splinecode" style={{ width: '100%', height: '100%' }} />
       </div>
 
